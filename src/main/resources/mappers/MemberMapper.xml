@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.flab.openmarket.repository.MemberRepository">
+
+    <insert id="save" parameterType="com.flab.openmarket.model.Member">
+        INSERT INTO  member (email, name, password, phone, role, created_at, updated_at)
+        VALUES (#{email}, #{name}, #{password}, #{phone}, #{role}, #{createdAt}, #{updatedAt} )
+    </insert>
+
+    <select id="existsByEmail" parameterType="String" resultType="Boolean">
+        SELECT EXISTS(
+            SELECT
+                m.member_id
+            FROM
+                member m
+            WHERE
+                m.email = #{email}
+        )
+    </select>
+
+    <select id="existsByPhone" parameterType="String" resultType="Boolean">
+        SELECT EXISTS(
+            SELECT
+                m.member_id
+            FROM
+                member m
+            WHERE
+                m.phone = #{phone}
+        )
+    </select>
+
+
+
+</mapper>
