@@ -9,6 +9,7 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 @MappedTypes(MemberRole.class)
 public class MemberRoleHandler implements TypeHandler<MemberRole> {
@@ -36,6 +37,9 @@ public class MemberRoleHandler implements TypeHandler<MemberRole> {
     }
 
     private MemberRole getRole(String value) {
-        return MemberRole.valueOf(value);
+        return Arrays.stream(MemberRole.values())
+                .filter(memberRole -> memberRole.getValue().equals(value))
+                .findFirst()
+                .orElse(null);
     }
 }

@@ -1,6 +1,8 @@
 package com.flab.openmarket.service;
 
-import com.flab.openmarket.dto.MemberCreateRequestDto;
+import com.flab.openmarket.dto.MemberCreateRequest;
+import com.flab.openmarket.exception.DuplicateEmailException;
+import com.flab.openmarket.exception.DuplicatePhoneException;
 import com.flab.openmarket.model.Member;
 import com.flab.openmarket.model.MemberRole;
 import com.flab.openmarket.repository.MemberRepository;
@@ -17,7 +19,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void createUser(MemberCreateRequestDto createRequestDto) {
+    public Long signup(MemberCreateRequest createRequestDto) {
         this.checkDuplicateEmail(createRequestDto.getEmail());
         this.checkDuplicatePhone(createRequestDto.getPhone());
 
@@ -30,7 +32,9 @@ public class MemberService {
                 .createdAt(DateUtil.getCurrentUTCDateTime())
                 .build();
 
-        memberRepository.save(member);
+        Long memberId = memberRepository.save(member);
+
+        return memberId;
     }
 
     @Transactional(readOnly = true)
@@ -38,7 +42,7 @@ public class MemberService {
         boolean existsByEmail = memberRepository.existsByEmail(email);
 
         if(existsByEmail) {
-            throw new RuntimeException("duplicate email");
+            throw new DuplicateEmailException();
         }
     }
 
@@ -47,7 +51,7 @@ public class MemberService {
         boolean existsByPhone = memberRepository.existsByPhone(phone);
 
         if(existsByPhone) {
-            throw new RuntimeException("duplicate phone");
+            throw new DuplicatePhoneException();
         }
     }
 }
