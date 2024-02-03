@@ -27,7 +27,7 @@ public class SecurityConfig {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/", "/h2-console/**", "/api/v1/users").permitAll()
+                        .requestMatchers("/", "/h2-console/**", "/api/v1/users/signup").permitAll()
                 )
                 .formLogin(FormLoginConfigurer::disable);
 

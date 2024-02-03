@@ -5,7 +5,9 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface MemberRepository {
-    void save(Member member);
+    Member findById(Long memberId);
+
+    Long save(Member member);
 
     boolean existsByEmail(String email);
 

@@ -5,10 +5,19 @@
 
 <mapper namespace="com.flab.openmarket.repository.MemberRepository">
 
-    <insert id="save" parameterType="com.flab.openmarket.model.Member">
+    <insert id="save" parameterType="com.flab.openmarket.model.Member" useGeneratedKeys="true" keyColumn="member_id">
         INSERT INTO  member (email, name, password, phone, role, created_at, updated_at)
         VALUES (#{email}, #{name}, #{password}, #{phone}, #{role}, #{createdAt}, #{updatedAt} )
     </insert>
+
+    <select id="findById" parameterType="Long" resultType="com.flab.openmarket.model.Member">
+        SELECT
+            m.*
+        FROM
+            member m
+        WHERE
+            m.member_id = #{memberId}
+    </select>
 
     <select id="existsByEmail" parameterType="String" resultType="Boolean">
         SELECT EXISTS(
